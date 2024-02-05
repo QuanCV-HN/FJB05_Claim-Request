@@ -16,19 +16,12 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_id")
     private Integer id;
-    private String nameProject;
-    private String projectCode;
-    private String duration;
+
+    private String name;
+    private String code;
     private Date startDate;
     private Date endDate;
-    private String pm;
-    private String qa;
-    private String technicalLead;
-    private String ba;
-    private String developer;
-    private String test;
-    private String technicalConsultancy;
-    private String finance;
+
     @OneToMany(mappedBy = "project")
     private List<ClaimRequest> claimRequests = new ArrayList<>();
 
