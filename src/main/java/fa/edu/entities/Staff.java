@@ -1,7 +1,10 @@
 package fa.edu.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -9,6 +12,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Staff {
     @Id
@@ -23,5 +28,9 @@ public class Staff {
     private String password;
     private String rePassword;
     @OneToMany(mappedBy = "staff")
-    private List<ClaimRequest> claimRequests = new ArrayList<>();
+    @JsonIgnore
+    private List<Claim> claims = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "staff")
+    private List<Working> workings = new ArrayList<>();
 }

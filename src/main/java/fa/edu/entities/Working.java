@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Entity
@@ -12,6 +14,13 @@ public class Working {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
+
+    private String roleStaff;
+    private Date startDate;
+    private Date endDate;
+
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
@@ -19,9 +28,4 @@ public class Working {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
-
-    @Enumerated(EnumType.STRING)
-    private RoleEnum role;
-
-
 }
