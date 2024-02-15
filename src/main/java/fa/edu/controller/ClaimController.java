@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class claimController {
+public class ClaimController {
     @Autowired
     StaffRepository staffRepository;
     @GetMapping("/claim/draft/{id}")
