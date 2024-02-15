@@ -22,6 +22,12 @@ public class ProjectApi {
     StaffService staffService;
     @Autowired
     ProjectRepository projectRepository;
+
+    @GetMapping("api/projects/list")
+    public List<Project> getAllProjects() {
+        return projectRepository.findAll();
+    }
+
     @PostMapping("/api/createProject")
     public ResponseEntity<String> insertProjectAndStaff(@RequestBody ProjectStaffDTO projectStaffDTO) throws ChangeSetPersister.NotFoundException {
         Project project = projectStaffDTO.getProject();
