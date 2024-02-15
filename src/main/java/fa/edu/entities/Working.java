@@ -3,6 +3,7 @@ package fa.edu.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -19,9 +20,5 @@ public class Working {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
-
-    @Enumerated(EnumType.STRING)
-    private RoleEnum role;
-
 
 }
