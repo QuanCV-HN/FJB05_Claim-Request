@@ -1,3 +1,4 @@
+
 const currentPath = window.location.pathname;
 const pathElements = currentPath.split('/');
 const lastElement = pathElements[pathElements.length - 1];
