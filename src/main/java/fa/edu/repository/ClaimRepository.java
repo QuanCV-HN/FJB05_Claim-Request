@@ -1,17 +1,14 @@
 package fa.edu.repository;
 
-import fa.edu.entities.ClaimRequest;
+import fa.edu.entities.Claim;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface ClaimRepository extends JpaRepository<ClaimRequest,Integer> {
-//    Optional<Object> findById(Integer id);
-//
-//    List<ClaimRequest> findAll();
-//
-//    void save(ClaimRequest claim);
-//
-//    void deleteById(Integer id);
+public interface ClaimRepository extends JpaRepository<Claim, Integer> {
+    List<Claim> findByStaffId(Integer staffId);
+
+    @Query("SELECT c FROM Claim c JOIN FETCH c.project WHERE c.staffId = :staffId")
+    List<Claim> findClaimsAndProjectsByStaffId(Integer staffId);
 }
