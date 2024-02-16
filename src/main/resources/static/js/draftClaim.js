@@ -11,7 +11,6 @@ function getAllDraftClaim() {
         success: function(response) {
             let claimTable = $("#claimTable");
             claimTable.empty();
-            console.log(response);
             response.forEach(content => {
                 if (content.status === "Draft") {
                     $.ajax({

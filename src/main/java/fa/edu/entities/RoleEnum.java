@@ -10,7 +10,7 @@ public enum RoleEnum {
     ROLE_BA,
     ROLE_DEVELOPER,
     ROLE_TESTER,
-    ROLE_TECHNICAL_CONSULTANCY
+    ROLE_TECHNICAL_CONSULTANCY,
     ;
 }
 

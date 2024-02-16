@@ -15,4 +15,9 @@ public class claimController {
         staffRepository.findById(id);
         return "DraftClaim";
     }
+    @GetMapping("/claim/approver/{id}")
+    public String approverClaim(@PathVariable("id") Integer id) {
+        staffRepository.findById(id);
+        return "ApproverClaim";
+    }
 }

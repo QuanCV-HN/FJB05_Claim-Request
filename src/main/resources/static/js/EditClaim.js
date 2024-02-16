@@ -101,9 +101,11 @@ function getInfoProject(e) {
 
             response.workingDTOS.forEach(function(workingDTO) {
                 const optionElement = document.createElement("option");
-                optionElement.value = workingDTO.project.id;
-                optionElement.textContent = workingDTO.project.nameProject;
-                selectElement.appendChild(optionElement);
+                if (workingDTO.roleStaff !== "PM" && workingDTO.roleStaff !== "FINANCE") {
+                    optionElement.value = workingDTO.project.id;
+                    optionElement.textContent = workingDTO.project.nameProject;
+                    selectElement.appendChild(optionElement);
+                }
             });
 
             selectElement.addEventListener("change", function() {

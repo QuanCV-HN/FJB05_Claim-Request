@@ -85,4 +85,9 @@ public class ClaimApi {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/api/claims/project/{projectId}")
+    public List<Claim> getClaimsByProjectId(@PathVariable Integer projectId) {
+        return claimRepository.findClaimsByProjectId(projectId);
+    }
 }

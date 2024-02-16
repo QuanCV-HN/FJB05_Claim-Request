@@ -6,8 +6,8 @@ const hourOutput = document.getElementById("totalOutput");
 const status = document.getElementById("status");
 document.getElementById("dateInput").addEventListener("change", function() {
     let date = this.value;
-    let day = new Date(date).toLocaleDateString("en-US", { weekday: "long" }); // Lấy giá trị "day" từ "date"
-    document.getElementById("dayInput").value = day; // Gán giá trị "day" vào trường "dayInput"
+    let day = new Date(date).toLocaleDateString("en-US", { weekday: "long" });
+    document.getElementById("dayInput").value = day;
 });
 
 document.getElementById("submitBtn-modal").addEventListener("click", function() {
@@ -76,9 +76,11 @@ function getAllInfoStaff() {
 
             response.workingDTOS.forEach(function(workingDTO) {
                 const optionElement = document.createElement("option");
-                optionElement.value = workingDTO.project.id;
-                optionElement.textContent = workingDTO.project.nameProject;
-                selectElement.appendChild(optionElement);
+                if (workingDTO.roleStaff !== "PM" && workingDTO.roleStaff !== "FINANCE") {
+                    optionElement.value = workingDTO.project.id;
+                    optionElement.textContent = workingDTO.project.nameProject;
+                    selectElement.appendChild(optionElement);
+                }
             });
 
             selectElement.addEventListener("change", function() {
