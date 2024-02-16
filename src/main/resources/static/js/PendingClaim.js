@@ -73,7 +73,7 @@ function GetInfoProject(projectId, claimTable) {
                                     <td>${nameProject}</td>
                                     <td>${content.totalHours}</td>
                                     <td>${content.remarks}</td>
-                                    <td style="color: #2ce72c">${content.status}</td>
+                                    <td style="color: #ffd536">${content.status}</td>
                                     <td>
                                         <button class="btn btn-primary" onclick="changeLink(lastElement,${content.id})">
                                             <i class="fa fa-pen"></i> Details</button>

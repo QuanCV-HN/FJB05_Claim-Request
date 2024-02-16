@@ -81,6 +81,7 @@ function GetClaimToUpdate() {
                 fromOutput.textContent = response.fromDate;
                 toOutput.textContent = response.toDate;
                 totalOutput.textContent = response.totalHours;
+                remark.textContent = response.remarks;
                 getInfoProject(response.staffId);
             },
             error: function(xhr, status, error) {

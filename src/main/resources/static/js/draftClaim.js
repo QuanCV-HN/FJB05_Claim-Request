@@ -46,17 +46,18 @@ function getAllDraftClaim() {
 
 getAllDraftClaim();
 function deleteClaimById(claimId) {
-    $.ajax({
-        url: "/api/claims/staff/" + claimId,
-        type: "DELETE",
-        success: function(response) {
-            confirm("You are sure?")
-            location.reload();
-        },
-        error: function(xhr, status, error) {
-            console.log("Error deleting claim: " + status + ": " + error);
-        }
-    });
+    if (confirm("You are sure?")===true) {
+        $.ajax({
+            url: "/api/claims/staff/" + claimId,
+            type: "DELETE",
+            success: function(response) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.log("Error deleting claim: " + status + ": " + error);
+            }
+        });
+    }
 }
 document.getElementById("createClaim").addEventListener("click", function () {
     window.location.href = "/claim/create/" + lastElement;
