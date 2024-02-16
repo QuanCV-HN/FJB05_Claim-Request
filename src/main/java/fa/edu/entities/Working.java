@@ -12,6 +12,12 @@ public class Working {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
+
+    private String roleStaff;
+    private Date startDate;
+    private Date endDate;
 
     @ManyToOne
     @JoinColumn(name = "staff_id")
