@@ -90,4 +90,8 @@ public class ClaimApi {
     public List<Claim> getClaimsByProjectId(@PathVariable Integer projectId) {
         return claimRepository.findClaimsByProjectId(projectId);
     }
+    @GetMapping("/api/claims")
+    public List<Claim> getAll() {
+        return claimRepository.findAll();
+    }
 }

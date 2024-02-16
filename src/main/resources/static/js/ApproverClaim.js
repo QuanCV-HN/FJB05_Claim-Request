@@ -1,51 +1,43 @@
-jQuery(function ($) {
-    $(".sidebar-submenu").hide();
-
-    $(".sidebar-dropdown > a").click(function() {
-        $(".sidebar-submenu").slideUp(200);
-        if (
-            $(this)
-                .parent()
-                .hasClass("active")
-        ) {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .parent()
-                .removeClass("active");
-        } else {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .next(".sidebar-submenu")
-                .slideDown(200);
-            $(this)
-                .parent()
-                .addClass("active");
-        }
-    });
-
-    $("#close-sidebar").click(function() {
-        $(".page-wrapper").removeClass("toggled");
-    });
-    $("#show-sidebar").click(function() {
-        $(".page-wrapper").addClass("toggled");
-    });
-});
-
 const currentPath = window.location.pathname;
 const pathElements = currentPath.split('/');
 const lastElement = pathElements[pathElements.length - 1];
+const staffUrl = pathElements[pathElements.length - 3];
+let status = document.getElementById("status");
+let staffId = document.getElementById("staffId");
+let staffName = document.getElementById("staffName");
+let projectId = document.getElementById("projectId");
+let nameProject = document.getElementById("nameProject");
+let roleInProject = document.getElementById("roleInProject");
+let remark = document.getElementById("remark");
+let dateOutput = document.getElementById("dateOutput");
+let dayOutput = document.getElementById("dayOutput");
+let fromOutput = document.getElementById("fromOutput");
+let toOutput = document.getElementById("toOutput");
+let totalHours = document.getElementById("totalOutput");
 
-function GetInfoStaffPending() {
+function ApproveStaffPending() {
     $.ajax({
-        url: "/api/staff/" + lastElement,
+        url: "/api/claims/" + lastElement,
         type: "GET",
         dataType: "json",
         success: function (response) {
-            let claimTable = $("#claimTable");
-            claimTable.empty();
-            response.workingDTOS.forEach(content => {
-                if (content.roleStaff === "PM") {
-                    GetInfoProject(content.project.id, claimTable);
+            status.textContent = response.status;
+            staffId.textContent = response.staffId;
+            projectId.textContent =response.projectId;
+            remark.textContent = response.remarks;
+            dateOutput.textContent = response.claimDate;
+            dayOutput.textContent = response.day;
+            fromOutput.textContent = response.fromDate;
+            toOutput.textContent = response.toDate;
+            totalHours.textContent = response.totalHours;
+            GetInfoStaffAndProject(response.staffId, function (infoResponse) {
+                staffName.textContent = infoResponse.name;
+                for (let i = 0; i < infoResponse.workingDTOS.length; i++) {
+                    if (infoResponse.workingDTOS[i].project.id === response.projectId) {
+                        nameProject.textContent = infoResponse.workingDTOS[i].project.nameProject;
+                        roleInProject.textContent =infoResponse.workingDTOS[i].roleStaff;
+                        break;
+                    }
                 }
             });
         },
@@ -55,33 +47,15 @@ function GetInfoStaffPending() {
     });
 }
 
-GetInfoStaffPending();
-
-function GetInfoProject(projectId, claimTable) {
+function GetInfoStaffAndProject(e, callback) {
     $.ajax({
-        url: "/api/claims/project/" + projectId,
+        url: "/api/staff/" + e,
         type: "GET",
         dataType: "json",
         success: function (response) {
-            response.forEach(content => {
-                if (content.status === "Pending") {
-                    GetNameProject(content.projectId, function(nameProject) {
-                        GetEmailStaff(content.staffId, function(email) {
-                            let claimRow = `
-                                <tr>
-                                    <td>${email}</td>
-                                    <td>${nameProject}</td>
-                                    <td>${content.totalHours}</td>
-                                    <td>${content.remarks}</td>
-                                    <td style="color: #2ce72c">${content.status}</td>
-                                    <td><button class="btn btn-primary"><i class="fa fa-pen"></i> Details</button></td>
-                                </tr>
-                            `;
-                            claimTable.append(claimRow);
-                        });
-                    });
-                }
-            })
+            if (callback) {
+                callback(response);
+            }
         },
         error: function (xhr, status, error) {
             console.log(status + ": " + error);
@@ -89,13 +63,32 @@ function GetInfoProject(projectId, claimTable) {
     });
 }
 
-function GetNameProject(projectId, callback) {
+ApproveStaffPending();
+
+function submitApproveClaim() {
+    let claimData = {
+        status: "Approve",
+        claimDate: dateOutput.textContent,
+        day: dayOutput.textContent,
+        fromDate: fromOutput.textContent,
+        toDate: toOutput.textContent,
+        totalHours: totalOutput.textContent,
+        remarks: remark.value,
+        staffDTO: {
+            id: staffId.textContent
+        },
+        projectDTO: {
+            id: projectId.textContent
+        }
+    };
     $.ajax({
-        url: "/api/projects/" + projectId,
-        type: "GET",
-        dataType: "json",
+        url: "/api/claims/" + lastElement,
+        method: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(claimData),
         success: function (response) {
-            callback(response.nameProject);
+            alert("Approve thành công!");
+            window.location.href = "/claim/pending/" + staffUrl;
         },
         error: function (xhr, status, error) {
             console.log(status + ": " + error);
@@ -103,16 +96,6 @@ function GetNameProject(projectId, callback) {
     });
 }
 
-function GetEmailStaff(staffId, callback) {
-    $.ajax({
-        url: "/api/staff/" + staffId,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            callback(response.email);
-        },
-        error: function (xhr, status, error) {
-            console.log(status + ": " + error);
-        }
-    });
-}
+document.getElementById("submitApprove").addEventListener("click", function () {
+    submitApproveClaim();
+});
