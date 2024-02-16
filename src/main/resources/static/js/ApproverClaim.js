@@ -95,7 +95,73 @@ function submitApproveClaim() {
         }
     });
 }
+function submitRejectClaim() {
+    let claimData = {
+        status: "Reject",
+        claimDate: dateOutput.textContent,
+        day: dayOutput.textContent,
+        fromDate: fromOutput.textContent,
+        toDate: toOutput.textContent,
+        totalHours: totalOutput.textContent,
+        remarks: remark.value,
+        staffDTO: {
+            id: staffId.textContent
+        },
+        projectDTO: {
+            id: projectId.textContent
+        }
+    };
+    $.ajax({
+        url: "/api/claims/" + lastElement,
+        method: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(claimData),
+        success: function (response) {
+            alert("Reject thành công!");
+            window.location.href = "/claim/pending/" + staffUrl;
+        },
+        error: function (xhr, status, error) {
+            console.log(status + ": " + error);
+        }
+    });
+}
+function submitReturnClaim() {
+    let claimData = {
+        status: "Reject",
+        claimDate: dateOutput.textContent,
+        day: dayOutput.textContent,
+        fromDate: fromOutput.textContent,
+        toDate: toOutput.textContent,
+        totalHours: totalOutput.textContent,
+        remarks: remark.value,
+        staffDTO: {
+            id: staffId.textContent
+        },
+        projectDTO: {
+            id: projectId.textContent
+        }
+    };
+    $.ajax({
+        url: "/api/claims/" + lastElement,
+        method: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(claimData),
+        success: function (response) {
+            alert("Return thành công!");
+            window.location.href = "/claim/pending/" + staffUrl;
+        },
+        error: function (xhr, status, error) {
+            console.log(status + ": " + error);
+        }
+    });
+}
 
 document.getElementById("submitApprove").addEventListener("click", function () {
     submitApproveClaim();
+});
+document.getElementById("submitReject").addEventListener("click", function () {
+    submitRejectClaim();
+});
+document.getElementById("submitReturn").addEventListener("click", function () {
+    submitReturnClaim();
 });
