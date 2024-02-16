@@ -67,7 +67,7 @@ ApproveStaffPending();
 
 function submitApproveClaim() {
     let claimData = {
-        status: "Approve",
+        status: "Approved",
         claimDate: dateOutput.textContent,
         day: dayOutput.textContent,
         fromDate: fromOutput.textContent,

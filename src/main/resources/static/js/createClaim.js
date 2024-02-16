@@ -4,6 +4,7 @@ const fromOutput = document.getElementById("fromOutput");
 const toOutput = document.getElementById("toOutput");
 const hourOutput = document.getElementById("totalOutput");
 const status = document.getElementById("status");
+let remark = document.getElementById("remark");
 document.getElementById("dateInput").addEventListener("change", function() {
     let date = this.value;
     let day = new Date(date).toLocaleDateString("en-US", { weekday: "long" });
@@ -114,6 +115,7 @@ document.getElementById("submitDraft").addEventListener("click", function() {
         fromDate: fromOutput.innerText,
         toDate: toOutput.innerText,
         totalHours: hourOutput.innerText,
+        remarks: remark.value,
         staffDTO: {
             id: parseInt(document.getElementById("staffId").innerText)
         },
@@ -144,6 +146,7 @@ document.getElementById("submitPending").addEventListener("click", function() {
         fromDate: fromOutput.innerText,
         toDate: toOutput.innerText,
         totalHours: hourOutput.innerText,
+        remarks: remark.value,
         staffDTO: {
             id: parseInt(document.getElementById("staffId").innerText)
         },
@@ -162,7 +165,6 @@ document.getElementById("submitPending").addEventListener("click", function() {
             window.location.href = "/claim/draft/" + lastElement;
         },
         error: function(xhr, status, error) {
-            // Xử lý lỗi từ server
         }
     });
 });

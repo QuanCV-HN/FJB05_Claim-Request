@@ -136,7 +136,7 @@ function UpdateClaim() {
         fromDate: fromOutput.textContent,
         toDate: toOutput.textContent,
         totalHours: totalOutput.textContent,
-        remarks: remark.value,
+        "remarks": remark.value,
         "staffDTO": {
             "id": staffId.textContent
         },
