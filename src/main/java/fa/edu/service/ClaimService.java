@@ -32,6 +32,7 @@ public class ClaimService {
         claim.setFromDate(claimDTO.getFromDate());
         claim.setToDate(claimDTO.getToDate());
         claim.setTotalHours(claimDTO.getTotalHours());
+        claim.setRemarks(claimDTO.getRemarks());
 
         // Lấy thông tin nhân viên từ claimDTO
         StaffDTO staffDTO = claimDTO.getStaffDTO();
