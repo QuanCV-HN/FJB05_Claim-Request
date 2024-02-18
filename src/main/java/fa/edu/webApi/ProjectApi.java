@@ -58,4 +58,8 @@ public class ProjectApi {
         }
         return ResponseEntity.ok(projectDTO);
     }
+    @GetMapping("/api/project")
+    public List<ProjectDTO> getAllProjects() {
+        return projectService.getAll();
+    }
 }

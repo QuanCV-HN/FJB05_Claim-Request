@@ -85,4 +85,28 @@ public class ClaimApi {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/api/claims/project/{projectId}")
+    public List<Claim> getClaimsByProjectId(@PathVariable Integer projectId) {
+        return claimRepository.findClaimsByProjectId(projectId);
+    }
+    @GetMapping("/api/claims")
+    public List<Claim> getAll() {
+        return claimRepository.findAll();
+    }
+    @PutMapping("/api/claims/{id}/status")
+    public ResponseEntity<Claim> updateClaimStatus(@PathVariable Integer id, @RequestBody ClaimDTO claimDTO) {
+        Optional<Claim> optionalClaim = claimRepository.findById(id);
+        if (optionalClaim.isPresent()) {
+            Claim existingClaim = optionalClaim.get();
+
+            existingClaim.setStatus(claimDTO.getStatus());
+
+            Claim updatedClaim = claimRepository.save(existingClaim);
+
+            return ResponseEntity.ok(updatedClaim);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

@@ -81,6 +81,7 @@ function GetClaimToUpdate() {
                 fromOutput.textContent = response.fromDate;
                 toOutput.textContent = response.toDate;
                 totalOutput.textContent = response.totalHours;
+                remark.textContent = response.remarks;
                 getInfoProject(response.staffId);
             },
             error: function(xhr, status, error) {
@@ -101,9 +102,11 @@ function getInfoProject(e) {
 
             response.workingDTOS.forEach(function(workingDTO) {
                 const optionElement = document.createElement("option");
-                optionElement.value = workingDTO.project.id;
-                optionElement.textContent = workingDTO.project.nameProject;
-                selectElement.appendChild(optionElement);
+                if (workingDTO.roleStaff !== "PM" && workingDTO.roleStaff !== "FINANCE") {
+                    optionElement.value = workingDTO.project.id;
+                    optionElement.textContent = workingDTO.project.nameProject;
+                    selectElement.appendChild(optionElement);
+                }
             });
 
             selectElement.addEventListener("change", function() {
@@ -134,7 +137,7 @@ function UpdateClaim() {
         fromDate: fromOutput.textContent,
         toDate: toOutput.textContent,
         totalHours: totalOutput.textContent,
-        remarks: remark.value,
+        "remarks": remark.value,
         "staffDTO": {
             "id": staffId.textContent
         },

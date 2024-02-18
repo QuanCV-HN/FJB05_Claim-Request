@@ -7,6 +7,9 @@ import fa.edu.repository.ProjectRepository;
 import fa.edu.repository.WorkingRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class ProjectService {
@@ -42,6 +45,16 @@ public class ProjectService {
             return null;
         }
         return convertToDTO(project);
+    }
+
+    public List<ProjectDTO> getAll() {
+        List<Project> projects = projectRepository.findAll();
+        List<ProjectDTO> projectDTOs = new ArrayList<>();
+        for (Project project : projects) {
+            ProjectDTO projectDTO = convertToDTO(project);
+            projectDTOs.add(projectDTO);
+        }
+        return projectDTOs;
     }
 
 }
