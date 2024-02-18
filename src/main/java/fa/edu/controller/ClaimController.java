@@ -29,4 +29,9 @@ public class ClaimController {
         claimRepository.findById(id);
         return "ApproverClaim";
     }
+    @GetMapping("/claim/finance/{id}")
+    public String FinanceClaim(@PathVariable("id") Integer id) {
+        staffRepository.findById(id);
+        return "Finance";
+    }
 }
