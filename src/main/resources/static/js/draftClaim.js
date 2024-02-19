@@ -74,12 +74,121 @@ function EditClaimById(id) {
         }
     });
 }
-
-
-
-
-
-
+document.getElementById("list-approve").addEventListener("click", function () {
+    $.ajax({
+        url: "/api/claims/staff/" + lastElement,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            let claimTable = $("#claimTable");
+            claimTable.empty();
+            response.forEach(content => {
+                if (content.status === "Approved") {
+                    $.ajax({
+                        url: "/api/projects/" + content.projectId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(project) {
+                            claimTable.append(
+                                `
+                                <tr id="${content.id}">
+                                    <td>${project.nameProject}</td>
+                                    <td>${content.totalHours}</td>
+                                    <td>${content.remarks}</td>
+                                    <td>${content.status}</td>
+                                </tr>
+                                `
+                            );
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(status + ": " + error);
+                        }
+                    });
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.log(status + ": " + error);
+        }
+    });
+})
+document.getElementById("list-reject").addEventListener("click", function () {
+    $.ajax({
+        url: "/api/claims/staff/" + lastElement,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            let claimTable = $("#claimTable");
+            claimTable.empty();
+            response.forEach(content => {
+                if (content.status === "Reject") {
+                    $.ajax({
+                        url: "/api/projects/" + content.projectId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(project) {
+                            claimTable.empty();
+                            claimTable.append(
+                                `
+                                <tr id="${content.id}">
+                                    <td>${project.nameProject}</td>
+                                    <td>${content.totalHours}</td>
+                                    <td>${content.remarks}</td>
+                                    <td>${content.status}</td>
+                                </tr>
+                                `
+                            );
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(status + ": " + error);
+                        }
+                    });
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.log(status + ": " + error);
+        }
+    });
+})
+document.getElementById("list-pending").addEventListener("click", function () {
+    $.ajax({
+        url: "/api/claims/staff/" + lastElement,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            let claimTable = $("#claimTable");
+            claimTable.empty();
+            response.forEach(content => {
+                if (content.status === "Pending") {
+                    $.ajax({
+                        url: "/api/projects/" + content.projectId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(project) {
+                            claimTable.append(
+                                `
+                                <tr id="${content.id}">
+                                    <td>${project.nameProject}</td>
+                                    <td>${content.totalHours}</td>
+                                    <td>${content.remarks}</td>
+                                    <td>${content.status}</td>
+                                </tr>
+                                `
+                            );
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(status + ": " + error);
+                        }
+                    });
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.log(status + ": " + error);
+        }
+    });
+})
 
 jQuery(function ($) {
     $(".sidebar-submenu").hide();
@@ -113,6 +222,10 @@ jQuery(function ($) {
         $(".page-wrapper").addClass("toggled");
     });
 });
+let linkHome = document.getElementById("link-home");
+linkHome.addEventListener("click",function () {
+    location.reload();
+})
 let linkCreateClaim = document.getElementById("link-createClaim");
 let linkApprove = document.getElementById("link-approve");
 let linkFinance = document.getElementById("link-finance");
