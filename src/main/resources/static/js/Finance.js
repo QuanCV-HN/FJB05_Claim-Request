@@ -163,4 +163,5 @@ $("#paid-btn").on("click", function() {
         alert("Vui lòng chọn ít nhất một yêu cầu để thực hiện Paid.");
     }
 });
-GetInfoProject(projectId, claimTable);
+let linkHome = document.getElementById("link-home");
+linkHome.setAttribute("href","/claim/draft/" + lastElement);

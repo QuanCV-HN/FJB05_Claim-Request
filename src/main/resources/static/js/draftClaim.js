@@ -113,3 +113,9 @@ jQuery(function ($) {
         $(".page-wrapper").addClass("toggled");
     });
 });
+let linkCreateClaim = document.getElementById("link-createClaim");
+let linkApprove = document.getElementById("link-approve");
+let linkFinance = document.getElementById("link-finance");
+linkCreateClaim.setAttribute("href","/claim/create/"+lastElement);
+linkApprove.setAttribute("href","/claim/pending/"+lastElement);
+linkFinance.setAttribute("href","/claim/finance/" + lastElement);

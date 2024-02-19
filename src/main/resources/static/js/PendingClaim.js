@@ -122,3 +122,5 @@ function GetEmailStaff(staffId, callback) {
 function changeLink(staffId,claimId) {
     window.location.href = "/claim/"+staffId+"/approver/" + claimId;
 }
+let linkHome = document.getElementById("link-home");
+linkHome.setAttribute("href","/claim/draft/" + lastElement);

@@ -168,3 +168,5 @@ document.getElementById("submitPending").addEventListener("click", function() {
         }
     });
 });
+let linkBack = document.getElementById("link-back");
+linkBack.setAttribute("href","/claim/draft/" + lastElement);
