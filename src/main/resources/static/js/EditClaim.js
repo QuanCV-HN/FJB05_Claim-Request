@@ -67,6 +67,7 @@ document.getElementById("submitBtn-modal").addEventListener("click", function() 
 
     $('#myModal').modal('hide');
 });
+let linkBack = document.getElementById("link-back");
 function GetClaimToUpdate() {
     $.ajax({
             url: "http://localhost:8080/api/claims/" + lastElement,
@@ -83,6 +84,7 @@ function GetClaimToUpdate() {
                 totalOutput.textContent = response.totalHours;
                 remark.textContent = response.remarks;
                 getInfoProject(response.staffId);
+                linkBack.setAttribute("href","/claim/draft/" +response.staffId);
             },
             error: function(xhr, status, error) {
             }

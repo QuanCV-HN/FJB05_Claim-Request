@@ -12,7 +12,7 @@ function getAllDraftClaim() {
             let claimTable = $("#claimTable");
             claimTable.empty();
             response.forEach(content => {
-                if (content.status === "Draft") {
+                if (content.status === "Draft" || content.status === "Return") {
                     $.ajax({
                         url: "/api/projects/" + content.projectId,
                         type: "GET",

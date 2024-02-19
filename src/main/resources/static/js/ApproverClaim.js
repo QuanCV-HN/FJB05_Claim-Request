@@ -127,7 +127,7 @@ function submitRejectClaim() {
 }
 function submitReturnClaim() {
     let claimData = {
-        status: "Reject",
+        status: "Return",
         claimDate: dateOutput.textContent,
         day: dayOutput.textContent,
         fromDate: fromOutput.textContent,
