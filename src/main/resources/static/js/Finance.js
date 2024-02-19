@@ -165,3 +165,5 @@ $("#paid-btn").on("click", function() {
 });
 let linkHome = document.getElementById("link-home");
 linkHome.setAttribute("href","/claim/draft/" + lastElement);
+let linkDownload = document.getElementById("link-download");
+linkDownload.setAttribute("href","/claim/financePaid/" + lastElement);

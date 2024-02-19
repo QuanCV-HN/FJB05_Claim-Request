@@ -164,3 +164,5 @@ function downloadClaimsToExcel() {
 document.getElementById("btn-download").addEventListener("click", function () {
     downloadClaimsToExcel();
 });
+let linkHome = document.getElementById("link-home");
+linkHome.setAttribute("href","/claim/draft/" + lastElement);
