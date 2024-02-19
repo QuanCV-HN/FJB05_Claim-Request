@@ -2,7 +2,7 @@
 const currentPath = window.location.pathname;
 const pathElements = currentPath.split('/');
 const lastElement = pathElements[pathElements.length - 1];
-
+let userName = document.getElementById("user-name");
 function getAllDraftClaim() {
     $.ajax({
         url: "/api/claims/staff/" + lastElement,
