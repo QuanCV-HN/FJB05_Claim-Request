@@ -34,4 +34,9 @@ public class ClaimController {
         staffRepository.findById(id);
         return "Finance";
     }
+    @GetMapping("/claim/financePaid/{id}")
+    public String FinancePaid(@PathVariable("id") Integer id) {
+        staffRepository.findById(id);
+        return "FinancePaid";
+    }
 }
