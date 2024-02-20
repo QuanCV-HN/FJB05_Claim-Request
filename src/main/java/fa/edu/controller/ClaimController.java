@@ -40,9 +40,8 @@ public class ClaimController {
         staffRepository.findById(id);
         return "PendingClaim";
     }
-    @GetMapping("/claim/{staffId}/approver/{id}")
-    public String approveClaim(@PathVariable("id") Integer id,@PathVariable Integer staffId) {
-        staffRepository.findById(staffId);
+    @GetMapping("/claim/approver/{id}")
+    public String approveClaim(@PathVariable("id") Integer id) {
         claimRepository.findById(id);
         return "ApproverClaim";
     }

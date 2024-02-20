@@ -66,7 +66,6 @@ function GetClaimToUpdate() {
                 totalOutput.textContent = response.totalHours;
                 remark.textContent = response.remarks;
                 getInfoProject(response.staffId);
-                linkBack.setAttribute("href","/claim/draft");
             },
             error: function(xhr, status, error) {
             }
@@ -168,13 +167,19 @@ function submitUpdateClaim() {
         }
     });
 }
+linkBack.addEventListener("click", function () {
+    sessionStorage.removeItem("claimId");
+    window.location.href = "/claim/draft";
+})
 document.getElementById("submitDraft").addEventListener("click", function () {
     alert("Save thành công!");
     UpdateClaim();
+    sessionStorage.removeItem("claimId");
     window.location.href = "/claim/draft";
 })
 document.getElementById("submitPending").addEventListener("click", function () {
     alert("Submit thành công!");
     submitUpdateClaim();
+    sessionStorage.removeItem("claimId");
     window.location.href = "/claim/draft";
 })
