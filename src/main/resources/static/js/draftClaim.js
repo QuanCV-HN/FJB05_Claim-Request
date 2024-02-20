@@ -1,11 +1,56 @@
+function getCookie(name) {
+    var cookieName = name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
+    return "";
+}
 
-const currentPath = window.location.pathname;
-const pathElements = currentPath.split('/');
-const lastElement = pathElements[pathElements.length - 1];
-let userName = document.getElementById("user-name");
-function getAllDraftClaim() {
+let userName = getCookie("userName");
+let infoStaff = document.getElementById("infoStaff");
+infoStaff.textContent = userName;
+function getStaffByEmail() {
+        $.ajax({
+            url: "/api/staffByEmail/" + userName,
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                getAllDraftClaim(response.id);
+                document.getElementById("createClaim").addEventListener("click", function () {
+                    window.location.href = "/claim/create";
+                })
+                document.getElementById("list-pending").addEventListener("click", function() {
+                    loadPendingClaim(response.id);
+                });
+
+                document.getElementById("list-approve").addEventListener("click", function() {
+                    loadApprovedClaim(response.id);
+                });
+
+                document.getElementById("list-reject").addEventListener("click", function() {
+                    loadRejectClaim(response.id);
+                });
+                let linkCreateClaim = document.getElementById("link-createClaim");
+                let linkApprove = document.getElementById("link-approve");
+                let linkFinance = document.getElementById("link-finance");
+                linkCreateClaim.setAttribute("href","/claim/create/"+response.id);
+                linkApprove.setAttribute("href","/claim/pending/"+response.id);
+                linkFinance.setAttribute("href","/claim/finance/" + response.id);
+            }
+        });
+}
+getStaffByEmail();
+function getAllDraftClaim(e) {
     $.ajax({
-        url: "/api/claims/staff/" + lastElement,
+        url: "/api/claims/staff/" + e,
         type: "GET",
         dataType: "json",
         success: function(response) {
@@ -44,7 +89,6 @@ function getAllDraftClaim() {
     });
 }
 
-getAllDraftClaim();
 function deleteClaimById(claimId) {
     if (confirm("You are sure?")===true) {
         $.ajax({
@@ -60,13 +104,14 @@ function deleteClaimById(claimId) {
     }
 }
 document.getElementById("createClaim").addEventListener("click", function () {
-    window.location.href = "/claim/create/" + lastElement;
+    window.location.href = "/claim/create";
 })
 function EditClaimById(id) {
     $.ajax({
         url: "/api/claims/" + id,
         type: "GET",
         success: function(response) {
+            sessionStorage.setItem("claimId",id);
             window.location.href = "/claim/edit/" + id;
         },
         error: function(xhr, status, error) {
@@ -74,9 +119,9 @@ function EditClaimById(id) {
         }
     });
 }
-document.getElementById("list-approve").addEventListener("click", function () {
+function loadApprovedClaim(e) {
     $.ajax({
-        url: "/api/claims/staff/" + lastElement,
+        url: "/api/claims/staff/" + e,
         type: "GET",
         dataType: "json",
         success: function(response) {
@@ -111,10 +156,10 @@ document.getElementById("list-approve").addEventListener("click", function () {
             console.log(status + ": " + error);
         }
     });
-})
-document.getElementById("list-reject").addEventListener("click", function () {
+}
+function loadRejectClaim(e) {
     $.ajax({
-        url: "/api/claims/staff/" + lastElement,
+        url: "/api/claims/staff/" + e,
         type: "GET",
         dataType: "json",
         success: function(response) {
@@ -127,7 +172,6 @@ document.getElementById("list-reject").addEventListener("click", function () {
                         type: "GET",
                         dataType: "json",
                         success: function(project) {
-                            claimTable.empty();
                             claimTable.append(
                                 `
                                 <tr id="${content.id}">
@@ -150,10 +194,10 @@ document.getElementById("list-reject").addEventListener("click", function () {
             console.log(status + ": " + error);
         }
     });
-})
-document.getElementById("list-pending").addEventListener("click", function () {
+}
+function loadPendingClaim(e) {
     $.ajax({
-        url: "/api/claims/staff/" + lastElement,
+        url: "/api/claims/staff/" + e,
         type: "GET",
         dataType: "json",
         success: function(response) {
@@ -188,7 +232,7 @@ document.getElementById("list-pending").addEventListener("click", function () {
             console.log(status + ": " + error);
         }
     });
-})
+}
 
 jQuery(function ($) {
     $(".sidebar-submenu").hide();
@@ -226,9 +270,3 @@ let linkHome = document.getElementById("link-home");
 linkHome.addEventListener("click",function () {
     location.reload();
 })
-let linkCreateClaim = document.getElementById("link-createClaim");
-let linkApprove = document.getElementById("link-approve");
-let linkFinance = document.getElementById("link-finance");
-linkCreateClaim.setAttribute("href","/claim/create/"+lastElement);
-linkApprove.setAttribute("href","/claim/pending/"+lastElement);
-linkFinance.setAttribute("href","/claim/finance/" + lastElement);

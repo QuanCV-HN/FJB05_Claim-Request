@@ -1,40 +1,22 @@
-jQuery(function ($) {
-    $(".sidebar-submenu").hide();
-
-    $(".sidebar-dropdown > a").click(function() {
-        $(".sidebar-submenu").slideUp(200);
-        if (
-            $(this)
-                .parent()
-                .hasClass("active")
-        ) {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .parent()
-                .removeClass("active");
-        } else {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .next(".sidebar-submenu")
-                .slideDown(200);
-            $(this)
-                .parent()
-                .addClass("active");
+function getCookie(name) {
+    var cookieName = name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
         }
-    });
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
+    return "";
+}
 
-    $("#close-sidebar").click(function() {
-        $(".page-wrapper").removeClass("toggled");
-    });
-    $("#show-sidebar").click(function() {
-        $(".page-wrapper").addClass("toggled");
-    });
-});
-
-const currentPath = window.location.pathname;
-const pathElements = currentPath.split('/');
-const lastElement = pathElements[pathElements.length - 1];
-
+let userName = getCookie("userName");
+let infoStaff = document.getElementById("infoStaff");
+infoStaff.textContent = userName;
 
 let status = document.getElementById("status");
 let staffId = document.getElementById("staffId");
@@ -70,7 +52,7 @@ document.getElementById("submitBtn-modal").addEventListener("click", function() 
 let linkBack = document.getElementById("link-back");
 function GetClaimToUpdate() {
     $.ajax({
-            url: "http://localhost:8080/api/claims/" + lastElement,
+            url: "http://localhost:8080/api/claims/" + sessionStorage.getItem("claimId"),
             method: "GET",
             contentType: "application/json",
             success: function(response) {
@@ -84,7 +66,7 @@ function GetClaimToUpdate() {
                 totalOutput.textContent = response.totalHours;
                 remark.textContent = response.remarks;
                 getInfoProject(response.staffId);
-                linkBack.setAttribute("href","/claim/draft/" +response.staffId);
+                linkBack.setAttribute("href","/claim/draft");
             },
             error: function(xhr, status, error) {
             }
@@ -148,7 +130,7 @@ function UpdateClaim() {
         }
     };
     $.ajax({
-        url: "http://localhost:8080/api/claims/" + lastElement,
+        url: "http://localhost:8080/api/claims/" + sessionStorage.getItem("claimId"),
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(claimData),
@@ -176,7 +158,7 @@ function submitUpdateClaim() {
         }
     };
     $.ajax({
-        url: "http://localhost:8080/api/claims/" + lastElement,
+        url: "http://localhost:8080/api/claims/" + sessionStorage.getItem("claimId"),
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(claimData),
@@ -189,10 +171,10 @@ function submitUpdateClaim() {
 document.getElementById("submitDraft").addEventListener("click", function () {
     alert("Save thành công!");
     UpdateClaim();
-    window.location.href = "/claim/draft/" + staffId.textContent;
+    window.location.href = "/claim/draft";
 })
 document.getElementById("submitPending").addEventListener("click", function () {
     alert("Submit thành công!");
     submitUpdateClaim();
-    window.location.href = "/claim/draft/" + staffId.textContent;
+    window.location.href = "/claim/draft";
 })

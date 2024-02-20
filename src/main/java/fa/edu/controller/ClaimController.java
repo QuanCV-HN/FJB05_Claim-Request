@@ -1,8 +1,12 @@
 package fa.edu.controller;
 
+import fa.edu.auth.StaffDetail;
 import fa.edu.repository.ClaimRepository;
 import fa.edu.repository.StaffRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +17,22 @@ public class ClaimController {
     StaffRepository staffRepository;
     @Autowired
     ClaimRepository claimRepository;
-    @GetMapping("/claim/draft/{id}")
-    public String DraftClaim(@PathVariable("id") Integer id) {
-        staffRepository.findById(id);
+    @GetMapping({"/","/login"})
+    public String login() {
+        return "login";
+    }
+//    @GetMapping("/claim/draft")
+//    public String DraftClaim(HttpServletRequest request, HttpSession session) {
+//        // Lấy id từ session
+//        Integer staffId = (Integer) session.getAttribute("staffId");
+//
+//        // Chuyển hướng đến URL "/claim/draft/{id}"
+//        return "redirect:/claim/draft/" + staffId;
+//    }
+
+    @GetMapping("/claim/draft")
+    public String DraftClaimWithId(HttpSession session) {
+        staffRepository.findById((Integer) session.getAttribute("staffId"));
         return "DraftClaim";
     }
     @GetMapping("/claim/pending/{id}")

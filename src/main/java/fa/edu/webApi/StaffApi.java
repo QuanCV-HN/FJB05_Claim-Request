@@ -33,4 +33,8 @@ public class StaffApi {
     public List<Staff> getAllStaff() {
         return staffRepository.findAll();
     }
+    @GetMapping("/api/staffByEmail/{email}")
+    public Staff getStaffByEmail(@PathVariable String email) {
+        return staffRepository.findByEmail(email);
+    }
 }
