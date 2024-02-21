@@ -1,43 +1,47 @@
-jQuery(function ($) {
-    $(".sidebar-submenu").hide();
+function getCookie(name) {
+    var cookieName = name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
+    return "";
+}
 
-    $(".sidebar-dropdown > a").click(function() {
-        $(".sidebar-submenu").slideUp(200);
-        if (
-            $(this)
-                .parent()
-                .hasClass("active")
-        ) {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .parent()
-                .removeClass("active");
-        } else {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .next(".sidebar-submenu")
-                .slideDown(200);
-            $(this)
-                .parent()
-                .addClass("active");
+let userName = getCookie("userName");
+let infoStaff = document.getElementById("infoStaff");
+infoStaff.textContent = userName;
+function getStaffByEmail() {
+    $.ajax({
+        url: "/api/staffByEmail/" + userName,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            GetInfoStaffPending(response.id);
+            let linkHome = document.getElementById("link-home");
+            linkHome.addEventListener("click", function () {
+                window.location.href = "/claim/draft";
+            })
+            let linkDownload = document.getElementById("link-download");
+            linkDownload.addEventListener("click", function () {
+                window.location.href = "/claim/financePaid/" + response.id;
+            })
+
+            document.getElementById("link-back").addEventListener("click", function () {
+                window.location.href = "/claim/pending/" + response.id;
+            })
         }
     });
-
-    $("#close-sidebar").click(function() {
-        $(".page-wrapper").removeClass("toggled");
-    });
-    $("#show-sidebar").click(function() {
-        $(".page-wrapper").addClass("toggled");
-    });
-});
-
-const currentPath = window.location.pathname;
-const pathElements = currentPath.split('/');
-const lastElement = pathElements[pathElements.length - 1];
-
-function GetInfoStaffPending() {
+}
+function GetInfoStaffPending(e) {
     $.ajax({
-        url: "/api/staff/" + lastElement,
+        url: "/api/staff/" + e,
         type: "GET",
         dataType: "json",
         success: function (response) {
@@ -54,8 +58,6 @@ function GetInfoStaffPending() {
         }
     });
 }
-
-GetInfoStaffPending();
 
 function GetInfoProject(projectId, claimTable) {
     $.ajax({
@@ -163,7 +165,4 @@ $("#paid-btn").on("click", function() {
         alert("Vui lòng chọn ít nhất một yêu cầu để thực hiện Paid.");
     }
 });
-let linkHome = document.getElementById("link-home");
-linkHome.setAttribute("href","/claim/draft/" + lastElement);
-let linkDownload = document.getElementById("link-download");
-linkDownload.setAttribute("href","/claim/financePaid/" + lastElement);
+getStaffByEmail();

@@ -1,7 +1,4 @@
-const currentPath = window.location.pathname;
-const pathElements = currentPath.split('/');
-const lastElement = pathElements[pathElements.length - 1];
-const staffUrl = pathElements[pathElements.length - 3];
+
 let status = document.getElementById("status");
 let staffId = document.getElementById("staffId");
 let staffName = document.getElementById("staffName");
@@ -49,6 +46,9 @@ function getStaffByEmail() {
             document.getElementById("submitReturn").addEventListener("click", function () {
                 submitReturnClaim(response.id);
             });
+            document.getElementById("link-back").addEventListener("click", function () {
+                window.location.href = "/claim/pending/" + response.id;
+            })
         }
     });
 }
