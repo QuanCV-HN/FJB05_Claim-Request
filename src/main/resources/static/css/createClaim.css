@@ -1,4 +1,6 @@
 body {
+    margin: 0;
+    padding: 0;
     font-family: Arial, Helvetica, sans-serif;
 }
 .main-title__left {
@@ -6,6 +8,23 @@ body {
 }
 h6 {
     font-weight: bold;
+}
+.header {
+    background-color: rgb(23, 148, 148);
+    display: flex;
+    justify-content: space-between;
+}
+.header-left, .header-right {
+    padding: 10px;
+}
+.header-right > a {
+    padding: 10px;
+    font-size: 30px;
+    margin-top: 10px !important;
+    color: black !important;
+}
+.header-right > a:hover {
+    color: white;
 }
 .main {
     padding: 20px;

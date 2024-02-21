@@ -31,7 +31,8 @@ public class SecurityConfig {
                         .requestMatchers("/claim/**").hasAnyAuthority(RoleEnum.ROLE_STAFF.name())
                         .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
                         .anyRequest().authenticated()
-                ).formLogin(form -> form
+                )
+                .formLogin(form -> form
                         .loginPage("/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
@@ -39,7 +40,14 @@ public class SecurityConfig {
                         .permitAll()
                         .successHandler(authenticationSuccessHandler())
                 )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                )
                 .csrf(csrf -> csrf.disable());
+
         return http.build();
     }
 
