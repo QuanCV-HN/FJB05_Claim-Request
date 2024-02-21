@@ -15,9 +15,47 @@ let fromOutput = document.getElementById("fromOutput");
 let toOutput = document.getElementById("toOutput");
 let totalHours = document.getElementById("totalOutput");
 
+function getCookie(name) {
+    var cookieName = name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
+    return "";
+}
+
+let userName = getCookie("userName");
+let infoStaff = document.getElementById("infoStaff");
+infoStaff.textContent = userName;
+function getStaffByEmail() {
+    $.ajax({
+        url: "/api/staffByEmail/" + userName,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            document.getElementById("submitApprove").addEventListener("click", function () {
+                submitApproveClaim(response.id);
+            });
+            document.getElementById("submitReject").addEventListener("click", function () {
+                submitRejectClaim(response.id);
+            });
+            document.getElementById("submitReturn").addEventListener("click", function () {
+                submitReturnClaim(response.id);
+            });
+        }
+    });
+}
+
 function ApproveStaffPending() {
     $.ajax({
-        url: "/api/claims/" + lastElement,
+        url: "/api/claims/" + sessionStorage.getItem("DetailId"),
         type: "GET",
         dataType: "json",
         success: function (response) {
@@ -65,7 +103,7 @@ function GetInfoStaffAndProject(e, callback) {
 
 ApproveStaffPending();
 
-function submitApproveClaim() {
+function submitApproveClaim(e) {
     let claimData = {
         status: "Approved",
         claimDate: dateOutput.textContent,
@@ -82,20 +120,20 @@ function submitApproveClaim() {
         }
     };
     $.ajax({
-        url: "/api/claims/" + lastElement,
+        url: "/api/claims/" + sessionStorage.getItem("DetailId"),
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(claimData),
         success: function (response) {
             alert("Approve thành công!");
-            window.location.href = "/claim/pending/" + staffUrl;
+            window.location.href = "/claim/pending/" + e;
         },
         error: function (xhr, status, error) {
             console.log(status + ": " + error);
         }
     });
 }
-function submitRejectClaim() {
+function submitRejectClaim(e) {
     let claimData = {
         status: "Reject",
         claimDate: dateOutput.textContent,
@@ -112,20 +150,20 @@ function submitRejectClaim() {
         }
     };
     $.ajax({
-        url: "/api/claims/" + lastElement,
+        url: "/api/claims/" + sessionStorage.getItem("DetailId"),
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(claimData),
         success: function (response) {
             alert("Reject thành công!");
-            window.location.href = "/claim/pending/" + staffUrl;
+            window.location.href = "/claim/pending/" + e;
         },
         error: function (xhr, status, error) {
             console.log(status + ": " + error);
         }
     });
 }
-function submitReturnClaim() {
+function submitReturnClaim(e) {
     let claimData = {
         status: "Return",
         claimDate: dateOutput.textContent,
@@ -142,26 +180,17 @@ function submitReturnClaim() {
         }
     };
     $.ajax({
-        url: "/api/claims/" + lastElement,
+        url: "/api/claims/" + sessionStorage.getItem("DetailId"),
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(claimData),
         success: function (response) {
             alert("Return thành công!");
-            window.location.href = "/claim/pending/" + staffUrl;
+            window.location.href = "/claim/pending/" + e;
         },
         error: function (xhr, status, error) {
             console.log(status + ": " + error);
         }
     });
 }
-
-document.getElementById("submitApprove").addEventListener("click", function () {
-    submitApproveClaim();
-});
-document.getElementById("submitReject").addEventListener("click", function () {
-    submitRejectClaim();
-});
-document.getElementById("submitReturn").addEventListener("click", function () {
-    submitReturnClaim();
-});
+getStaffByEmail();

@@ -38,6 +38,12 @@ function getStaffByEmail() {
                 document.getElementById("list-reject").addEventListener("click", function() {
                     loadRejectClaim(response.id);
                 });
+                let linkCreateClaim = document.getElementById("link-createClaim");
+                let linkApprove = document.getElementById("link-approve");
+                let linkFinance = document.getElementById("link-finance");
+                linkCreateClaim.setAttribute("href","/claim/create");
+                linkApprove.setAttribute("href","/claim/pending/" + response.id);
+                linkFinance.setAttribute("href","/claim/finance/" + response.id);
             }
         });
 }
@@ -264,9 +270,3 @@ let linkHome = document.getElementById("link-home");
 linkHome.addEventListener("click",function () {
     location.reload();
 })
-let linkCreateClaim = document.getElementById("link-createClaim");
-let linkApprove = document.getElementById("link-approve");
-let linkFinance = document.getElementById("link-finance");
-linkCreateClaim.setAttribute("href","/claim/create");
-linkApprove.setAttribute("href","/claim/pending");
-linkFinance.setAttribute("href","/claim/finance");
