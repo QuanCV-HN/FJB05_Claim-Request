@@ -1,3 +1,4 @@
+
 function getCookie(name) {
     var cookieName = name + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
