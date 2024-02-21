@@ -5,6 +5,7 @@ import fa.edu.dto.ProjectStaffDTO;
 import fa.edu.dto.StaffWorkingDTO;
 import fa.edu.entities.*;
 import fa.edu.repository.ProjectRepository;
+import fa.edu.repository.WorkingRepository;
 import fa.edu.service.ProjectService;
 import fa.edu.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ProjectApi {
@@ -22,14 +24,16 @@ public class ProjectApi {
     StaffService staffService;
     @Autowired
     ProjectRepository projectRepository;
+    @Autowired
+    WorkingRepository workingRepository;
 
-    @GetMapping("api/projects/list")
+    @GetMapping("/api/projects/list")
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
 
-    @PostMapping("/api/createProject")
-    public ResponseEntity<String> insertProjectAndStaff(@RequestBody ProjectStaffDTO projectStaffDTO) throws ChangeSetPersister.NotFoundException {
+    @PostMapping("/api/projects/create")
+        public ResponseEntity<String> insertProjectAndStaff(@RequestBody ProjectStaffDTO projectStaffDTO) throws ChangeSetPersister.NotFoundException {
         Project project = projectStaffDTO.getProject();
         List<StaffWorkingDTO> staffWorkingDTOS = projectStaffDTO.getStaffs();
 
@@ -58,8 +62,39 @@ public class ProjectApi {
         }
         return ResponseEntity.ok(projectDTO);
     }
-    @GetMapping("/api/project")
-    public List<ProjectDTO> getAllProjects() {
-        return projectService.getAll();
+
+    @PostMapping("/api/projects/edit/{id}")
+    public ResponseEntity<Project> editProject(@RequestBody ProjectStaffDTO projectStaffDTO) throws ChangeSetPersister.NotFoundException {
+        Project updatedProject = projectStaffDTO.getProject();
+        workingRepository.deleteAllByProjectId(updatedProject.getId());
+        List<StaffWorkingDTO> staffWorkingDTOS = projectStaffDTO.getStaffs();
+
+        updatedProject = projectService.createProject(updatedProject);
+
+        for (StaffWorkingDTO staffDTO : staffWorkingDTOS) {
+            Staff staff = staffService.getStaffById(staffDTO.getStaffId());
+
+            Working working = new Working();
+            working.setProject(updatedProject);
+            working.setStaff(staff);
+            working.setRoleStaff(staffDTO.getRoleStaff());
+            working.setStartDate(staffDTO.getStartDate());
+            working.setEndDate(staffDTO.getEndDate());
+
+            projectService.createWorking(working);
+        }
+
+        return ResponseEntity.ok(updatedProject);
+    }
+
+    @DeleteMapping("/api/projects/delete/{id}")
+    public ResponseEntity<?> deleteProject(@PathVariable Integer id) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+        if (optionalProject.isPresent()) {
+            projectRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

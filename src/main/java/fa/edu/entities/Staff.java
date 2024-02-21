@@ -31,6 +31,7 @@ public class Staff {
 
     @JsonIgnore
     private List<Claim> claims = new ArrayList<>();
+
     @JsonIgnore
     @OneToMany(mappedBy = "staff")
     private List<Working> workings = new ArrayList<>();

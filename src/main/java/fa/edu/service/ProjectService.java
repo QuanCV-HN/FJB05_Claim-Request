@@ -35,6 +35,7 @@ public class ProjectService {
         projectDTO.setProjectCode(project.getProjectCode());
         projectDTO.setStartDate(project.getStartDate());
         projectDTO.setEndDate(project.getEndDate());
+        projectDTO.setWorkings(project.getWorkings());
 
         return projectDTO;
     }
