@@ -33,7 +33,7 @@
                       <span id="infoStaff">
 
                       </span>
-                    <span class="user-role">Staff</span>
+                    <span class="user-role" sec:authorize="hasRole('ROLE_ADMIN')">Admin</span>
                 </div>
             </div>
             <!-- sidebar-header  -->
@@ -53,49 +53,18 @@
             <div class="sidebar-menu">
                 <ul>
                     <li>
-                        <a href="#" id="link-home">
-                            <i class="fa fa-home"></i>
-                            <span>Home</span>
+                        <a th:href="@{/admin/staff/list}">
+                            <i class="fa fa-user"></i>
+                            <span>Staff Management</span>
                         </a>
                     </li>
                     <li>
-                        <a id="link-createClaim">
-                            <i class="fa fa-plus"></i>
-                            <span>Create Claim</span>
+                        <a th:href="@{/admin/projects/list}">
+                            <i class="fa fa-briefcase"></i>
+                            <span>Project Management</span>
                         </a>
                     </li>
-                    <li class="sidebar-dropdown">
-                        <a href="#">
-                            <i class="fa fa-tachometer-alt"></i>
-                            <span>My Claim</span>
-                        </a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li>
-                                    <a href="#" id="list-approve">Approved Claims
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" id="list-reject">Rejected Claims</a>
-                                </li>
-                                <li>
-                                    <a href="#" id="list-pending">Pending Claims</a>
-                                </li>
-                            </ul>
-                        </div>
 
-                    <li>
-                        <a id="link-approve">
-                            <i class="fa fa-check"></i>
-                            <span>Approve</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="link-finance">
-                            <i class="fa fa-coins"></i>
-                            <span>Finance</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
             <!-- sidebar-menu  -->

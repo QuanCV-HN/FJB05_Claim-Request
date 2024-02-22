@@ -9,11 +9,14 @@ h1 {
 }
 
 .table-wrapper {
-    width: 700px;
+    width: 100%;
     margin: 30px auto;
     background: #fff;
-    padding: 20px;
+    padding: 0px;
     box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-striped thead tr {
+    background-color: rgba(0, 0, 0, .1);
 }
 .table-title {
     padding-bottom: 10px;
@@ -127,11 +130,14 @@ table.table td .add {
     margin: 0px 20px 0px 0px;
 }
 .flex-input input {
-    text-align: center;
     width: 100%;
 }
 .flex-input label {
     display: block;
     text-align: center;
     margin-top: 20px;
+}
+
+input, select {
+    text-align: center;
 }

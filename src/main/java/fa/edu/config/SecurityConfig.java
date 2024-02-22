@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/", "/img/**", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/claim/**").hasAnyAuthority(RoleEnum.ROLE_STAFF.name())
+                        .requestMatchers("/admin/**").hasAnyAuthority(RoleEnum.ROLE_ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )

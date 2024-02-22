@@ -185,7 +185,7 @@ function getProjectToEdit() {
 
 function getStaffList(workingList) {
     $.ajax({
-        url: "/api/staff",
+        url: "/api/staff/list",
         type: "GET",
         dataType: "json",
         success: function (response) {

@@ -13,17 +13,17 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
 
-    @GetMapping("/projects/list")
+    @GetMapping("/admin/projects/list")
     public String getProjectPage() {
         return "/project/list";
     }
 
-    @GetMapping("/projects/create")
+    @GetMapping("/admin/projects/create")
     public String getCreateProjectPage() {
         return "/project/create";
     }
 
-    @GetMapping("/projects/edit/{id}")
+    @GetMapping("/admin/projects/edit/{id}")
     public String getEditProjectPage(@PathVariable Integer id) {
         return "/project/edit";
     }

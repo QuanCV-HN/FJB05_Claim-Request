@@ -19,7 +19,7 @@ function getAllProjects() {
                             <td>${project.nameProject}</td>
                             <td>${project.projectCode}</td>
                             <td>
-                                <a class="edit" href="/projects/edit/${project.id}" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                <a class="edit" href="/admin/projects/edit/${project.id}" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                                 <a class="delete" onclick="deleteProjectById(${project.id})" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                             </td>
                         </tr>

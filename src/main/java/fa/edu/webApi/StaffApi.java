@@ -29,7 +29,7 @@ public class StaffApi {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/api/staff")
+    @GetMapping("/api/staff/list")
     public List<Staff> getAllStaff() {
         return staffRepository.findAll();
     }
