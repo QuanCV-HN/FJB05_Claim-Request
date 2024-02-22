@@ -7,11 +7,10 @@ import fa.edu.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class StaffApi {
@@ -36,5 +35,19 @@ public class StaffApi {
     @GetMapping("/api/staffByEmail/{email}")
     public Staff getStaffByEmail(@PathVariable String email) {
         return staffRepository.findByEmail(email);
+    }
+    @PostMapping("/loginSuccess")
+    public ResponseEntity<String> login(@RequestBody Staff login) {
+        String email = login.getEmail();
+        String password = login.getPassword();
+        Staff staff = staffRepository.findByEmail(email);
+        if (staff == null) {
+            return ResponseEntity.ok("fail");
+        }
+
+        if (!staff.getPassword().equals(password)) {
+            return ResponseEntity.ok("fail");
+        }
+        return ResponseEntity.ok("success");
     }
 }

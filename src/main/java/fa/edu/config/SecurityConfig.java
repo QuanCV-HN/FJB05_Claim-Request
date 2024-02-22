@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -21,14 +22,16 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new SimpleUrlAuthenticationSuccessHandler("/claim/draft");
+        return new SimpleUrlAuthenticationSuccessHandler("/index");
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/", "/img/**", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/claim/**").hasAnyAuthority(RoleEnum.ROLE_STAFF.name())
+                        .requestMatchers("/claim/draft","/claim/**").hasAnyAuthority(RoleEnum.ROLE_STAFF.name())
+                        .requestMatchers("/admin/**").hasAnyAuthority(RoleEnum.ROLE_ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -56,7 +59,8 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+//        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
     }
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
