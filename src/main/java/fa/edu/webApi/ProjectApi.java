@@ -51,7 +51,6 @@ public class ProjectApi {
 
             projectService.createWorking(working);
         }
-
         return ResponseEntity.ok("Data inserted successfully");
     }
     @GetMapping("/api/projects/{id}")
