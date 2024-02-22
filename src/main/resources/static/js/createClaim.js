@@ -33,29 +33,6 @@ document.getElementById("submitBtn-modal").addEventListener("click", function() 
     $('#myModal').modal('hide');
 });
 
-$(document).ready(function() {
-    $(".sidebar-submenu").hide();
-
-    $(".sidebar-dropdown > a").click(function() {
-        $(".sidebar-submenu").slideUp(200);
-        if ($(this).parent().hasClass("active")) {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this).parent().removeClass("active");
-        } else {
-            $(".sidebar-dropdown").removeClass("active");
-            $(this).next(".sidebar-submenu").slideDown(200);
-            $(this).parent().addClass("active");
-        }
-    });
-
-    $("#close-sidebar").click(function() {
-        $(".page-wrapper").removeClass("toggled");
-    });
-    $("#show-sidebar").click(function() {
-        $(".page-wrapper").addClass("toggled");
-    });
-});
-
 function getCookie(name) {
     var cookieName = name + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -95,6 +72,8 @@ function getAllInfoStaff(e) {
             document.getElementById("staffName").innerText = response.name;
             const selectElement = document.getElementById("projectSelect");
             const roleInproject = document.getElementById("roleInProject");
+            let startDate = document.getElementById("startDate");
+            let endDate = document.getElementById("endDate");
 
             response.workingDTOS.forEach(function(workingDTO) {
                 const optionElement = document.createElement("option");
@@ -115,6 +94,24 @@ function getAllInfoStaff(e) {
                 if (selectedWorkingDTO) {
                     document.getElementById("projectId").innerText = selectedWorkingDTO.project.id;
                     roleInproject.innerText = selectedWorkingDTO.roleStaff;
+                    let sqlDate = selectedWorkingDTO.startDate;
+                    let jsDate = new Date(sqlDate);
+
+                    let year = jsDate.getFullYear();
+                    let month = String(jsDate.getMonth() + 1).padStart(2, '0');
+                    let day = String(jsDate.getDate()).padStart(2, '0');
+
+                    let formattedDate = `${year}-${month}-${day}`;
+                    startDate.textContent = formattedDate;
+                    var sqlEndDate = selectedWorkingDTO.endDate;
+                    var jsEndDate = new Date(sqlEndDate);
+
+                     year = jsEndDate.getFullYear();
+                     month = String(jsEndDate.getMonth() + 1).padStart(2, '0');
+                     day = String(jsEndDate.getDate()).padStart(2, '0');
+
+                    var formattedEndDate = `${year}-${month}-${day}`;
+                    endDate.textContent = formattedEndDate;
                 } else {
                     roleInproject.innerText = "";
                 }
@@ -148,6 +145,17 @@ document.getElementById("submitDraft").addEventListener("click", function() {
         contentType: "application/json",
         data: JSON.stringify(claimData),
         success: function(response) {
+            let formattedStartDate = startDate.textContent;
+            let formattedEndDate = endDate.textContent;
+
+            let claimDate = dateOutput.innerText;
+            let claimDateFormatted = claimDate.split("/").reverse().join("-");
+
+            if (claimDateFormatted < formattedStartDate || claimDateFormatted > formattedEndDate) {
+                alert("Ngày yêu cầu không hợp lệ!");
+                return;
+            }
+
             alert("Save thành công!");
             window.location.href = "/claim/draft";
         },
@@ -180,6 +188,16 @@ document.getElementById("submitPending").addEventListener("click", function() {
         contentType: "application/json",
         data: JSON.stringify(claimData),
         success: function(response) {
+            let formattedStartDate = startDate.textContent;
+            let formattedEndDate = endDate.textContent;
+
+            let claimDate = dateOutput.innerText;
+            let claimDateFormatted = claimDate.split("/").reverse().join("-");
+
+            if (claimDateFormatted < formattedStartDate || claimDateFormatted > formattedEndDate) {
+                alert("Ngày yêu cầu không hợp lệ!");
+                return;
+            }
             alert("Submit thành công!");
             window.location.href = "/claim/draft";
         },

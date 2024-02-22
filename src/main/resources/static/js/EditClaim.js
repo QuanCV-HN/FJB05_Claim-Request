@@ -59,7 +59,15 @@ function GetClaimToUpdate() {
                 status.textContent = response.status;
                 staffId.textContent = response.staffId;
                 projectId.textContent = response.projectId;
-                dateOutput.textContent = response.claimDate;
+                let sqlDate = response.claimDate;
+                let jsDate = new Date(sqlDate);
+
+                let year = jsDate.getFullYear();
+                let month = String(jsDate.getMonth() + 1).padStart(2, '0');
+                let day = String(jsDate.getDate()).padStart(2, '0');
+
+                let formattedDate = `${year}-${month}-${day}`;
+                dateOutput.textContent = formattedDate;
                 dayOutput.textContent = response.day;
                 fromOutput.textContent = response.fromDate;
                 toOutput.textContent = response.toDate;
@@ -102,6 +110,24 @@ function getInfoProject(e) {
                 if (selectedWorkingDTO) {
                     document.getElementById("projectId").innerText = selectedWorkingDTO.project.id;
                     roleInproject.innerText = selectedWorkingDTO.roleStaff;
+                    let sqlDate = selectedWorkingDTO.startDate;
+                    let jsDate = new Date(sqlDate);
+
+                    let year = jsDate.getFullYear();
+                    let month = String(jsDate.getMonth() + 1).padStart(2, '0');
+                    let day = String(jsDate.getDate()).padStart(2, '0');
+
+                    let formattedDate = `${year}-${month}-${day}`;
+                    startDate.textContent = formattedDate;
+                    let sqlEndDate = selectedWorkingDTO.endDate;
+                    let jsEndDate = new Date(sqlEndDate);
+
+                    year = jsEndDate.getFullYear();
+                    month = String(jsEndDate.getMonth() + 1).padStart(2, '0');
+                    day = String(jsEndDate.getDate()).padStart(2, '0');
+
+                    let formattedEndDate = `${year}-${month}-${day}`;
+                    endDate.textContent = formattedEndDate;
                 } else {
                     roleInproject.innerText = "";
                 }
@@ -172,14 +198,33 @@ linkBack.addEventListener("click", function () {
     window.location.href = "/claim/draft";
 })
 document.getElementById("submitDraft").addEventListener("click", function () {
+    let formattedStartDate = startDate.textContent;
+    let formattedEndDate = endDate.textContent;
+
+    let claimDate = dateOutput.innerText;
+    let claimDateFormatted = claimDate.split("/").reverse().join("-");
+
+    if (claimDateFormatted < formattedStartDate || claimDateFormatted > formattedEndDate) {
+        alert("Ngày yêu cầu không hợp lệ!");
+        return;
+    }
     alert("Save thành công!");
     UpdateClaim();
-    sessionStorage.removeItem("claimId");
+
     window.location.href = "/claim/draft";
 })
 document.getElementById("submitPending").addEventListener("click", function () {
+    let formattedStartDate = startDate.textContent;
+    let formattedEndDate = endDate.textContent;
+
+    let claimDate = dateOutput.innerText;
+    let claimDateFormatted = claimDate.split("/").reverse().join("-");
+
+    if (claimDateFormatted < formattedStartDate || claimDateFormatted > formattedEndDate) {
+        alert("Ngày yêu cầu không hợp lệ!");
+        return;
+    }
     alert("Submit thành công!");
     submitUpdateClaim();
-    sessionStorage.removeItem("claimId");
     window.location.href = "/claim/draft";
 })

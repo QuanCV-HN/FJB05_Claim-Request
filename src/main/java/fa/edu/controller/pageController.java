@@ -21,4 +21,8 @@ public class pageController {
         staffRepository.findById(id);
         return "EditClaim";
     }
+    @GetMapping("/index")
+    public String homePage() {
+        return "index";
+    }
 }
