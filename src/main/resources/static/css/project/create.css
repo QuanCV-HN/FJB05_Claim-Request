@@ -25,6 +25,7 @@ h1 {
 }
 .table-title .row {
     margin-left: 10px;
+    justify-content: center;
 }
 .table-title .add-new {
     float: right;

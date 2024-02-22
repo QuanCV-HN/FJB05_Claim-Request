@@ -10,6 +10,7 @@ function getAllProjects() {
             response.forEach(project => {
                 let pm = project.workings.find(w => w.roleStaff === "PM");
                 let qa = project.workings.find(w => w.roleStaff === "QA");
+
                 projectTable.append(
                     `
                         <tr>
