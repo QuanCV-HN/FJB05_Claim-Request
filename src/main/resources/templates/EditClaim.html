@@ -13,6 +13,16 @@
     <link rel="stylesheet" th:href="@{/css/createClaim.css}">
 </head>
 <body>
+<div class="header">
+    <div class="header-left">
+        <img th:src="@{/img/FPT_logo_2010.svg.png}" alt="" style="width: 80px; height: 50px;">
+    </div>
+    <div class="header-right">
+        <a href="/logout" id="logout">
+            <i class='fas fa-sign-out-alt' style='font-size:36px'></i>
+        </a>
+    </div>
+</div>
 <div class="page-wrapper chiller-theme toggled">
     <div>
         <nav id="sidebar" class="sidebar-wrapper">
@@ -28,8 +38,8 @@
                              alt="User picture">
                     </div>
                     <div class="user-info">
-                      <span class="user-name">
-                        <strong></strong>
+                      <span class="user-name" id="infoStaff">
+
                       </span>
                         <span class="user-role">Staff</span>
                     </div>
@@ -49,27 +59,7 @@
                 </div>
                 <!-- sidebar-search  -->
                 <div class="sidebar-menu">
-                    <ul>
-                        <li class="sidebar-dropdown">
-                            <a href="#">
-                                <i class="fa fa-tachometer-alt"></i>
-                                <span>My Claim</span>
-                            </a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li>
-                                        <a href="#">Approved Claims
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Rejected Claims</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Pending Claims</a>
-                                    </li>
-                                </ul>
-                            </div>
-                    </ul>
+
                 </div>
                 <!-- sidebar-menu  -->
             </div>
@@ -81,7 +71,7 @@
         <div class="main-title">
             <div class="main-title__left">
                 <i class="fa fa-angle-left" style="color: blue;"></i>
-                <a href="#">Back</a>
+                <a href="#" id="link-back">Back</a>
             </div>
             <div class="main-title__right">
                 <button class="btn btn-primary" id="submitDraft">Save</button>

@@ -1,3 +1,8 @@
+const dateInput = document.getElementById("dateInput");
+const dayInput = document.getElementById("dayInput");
+const fromInput = document.getElementById("fromInput");
+const toInput = document.getElementById("toInput");
+const hoursInput = document.getElementById("hoursInput");
 const dateOutput = document.getElementById("dateOutput");
 const dayOutput = document.getElementById("dayOutput");
 const fromOutput = document.getElementById("fromOutput");
@@ -5,18 +10,19 @@ const toOutput = document.getElementById("toOutput");
 const hourOutput = document.getElementById("totalOutput");
 const status = document.getElementById("status");
 let remark = document.getElementById("remark");
-document.getElementById("dateInput").addEventListener("change", function() {
+
+dateInput.addEventListener("change", function() {
     let date = this.value;
     let day = new Date(date).toLocaleDateString("en-US", { weekday: "long" });
-    document.getElementById("dayInput").value = day;
+    dayInput.value = day;
 });
 
 document.getElementById("submitBtn-modal").addEventListener("click", function() {
-    let date = document.getElementById("dateInput").value;
-    let day = document.getElementById("dayInput").value;
-    let from = document.getElementById("fromInput").value;
-    let to = document.getElementById("toInput").value;
-    let hours = document.getElementById("hoursInput").value;
+    let date = dateInput.value;
+    let day = dayInput.value;
+    let from = fromInput.value;
+    let to = toInput.value;
+    let hours = hoursInput.value;
 
     dateOutput.innerText = date;
     dayOutput.innerText = day;
@@ -27,28 +33,18 @@ document.getElementById("submitBtn-modal").addEventListener("click", function() 
     $('#myModal').modal('hide');
 });
 
-jQuery(function ($) {
+$(document).ready(function() {
     $(".sidebar-submenu").hide();
 
     $(".sidebar-dropdown > a").click(function() {
         $(".sidebar-submenu").slideUp(200);
-        if (
-            $(this)
-                .parent()
-                .hasClass("active")
-        ) {
+        if ($(this).parent().hasClass("active")) {
             $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .parent()
-                .removeClass("active");
+            $(this).parent().removeClass("active");
         } else {
             $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .next(".sidebar-submenu")
-                .slideDown(200);
-            $(this)
-                .parent()
-                .addClass("active");
+            $(this).next(".sidebar-submenu").slideDown(200);
+            $(this).parent().addClass("active");
         }
     });
 
@@ -60,13 +56,38 @@ jQuery(function ($) {
     });
 });
 
-const currentPath = window.location.pathname;
-const pathElements = currentPath.split('/');
-const lastElement = pathElements[pathElements.length - 1];
+function getCookie(name) {
+    var cookieName = name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
+    return "";
+}
 
-function getAllInfoStaff() {
+let userName = getCookie("userName");
+let infoStaff = document.getElementById("infoStaff");
+infoStaff.textContent = userName;
+function getStaffByEmail() {
     $.ajax({
-        url: "/api/staff/" + lastElement,
+        url: "/api/staffByEmail/" + userName,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            getAllInfoStaff(response.id);
+        }
+    });
+}
+function getAllInfoStaff(e) {
+    $.ajax({
+        url: "/api/staff/" + e,
         type: "GET",
         dataType: "json",
         success: function(response) {
@@ -104,9 +125,6 @@ function getAllInfoStaff() {
         }
     });
 }
-
-getAllInfoStaff();
-
 document.getElementById("submitDraft").addEventListener("click", function() {
     let claimData = {
         status: status.innerText,
@@ -131,13 +149,14 @@ document.getElementById("submitDraft").addEventListener("click", function() {
         data: JSON.stringify(claimData),
         success: function(response) {
             alert("Save thành công!");
-            window.location.href = "/claim/draft/" + lastElement;
+            window.location.href = "/claim/draft";
         },
         error: function(xhr, status, error) {
             // Xử lý lỗi từ server
         }
     });
 });
+
 document.getElementById("submitPending").addEventListener("click", function() {
     let claimData = {
         status: "Pending",
@@ -162,9 +181,15 @@ document.getElementById("submitPending").addEventListener("click", function() {
         data: JSON.stringify(claimData),
         success: function(response) {
             alert("Submit thành công!");
-            window.location.href = "/claim/draft/" + lastElement;
+            window.location.href = "/claim/draft";
         },
         error: function(xhr, status, error) {
+            // Xử lý lỗi từ server
         }
     });
 });
+
+let linkBack = document.getElementById("link-back");
+linkBack.setAttribute("href", "/claim/draft");
+
+getStaffByEmail();

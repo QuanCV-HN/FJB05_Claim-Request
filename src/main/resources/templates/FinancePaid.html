@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/createClaim.css}">
     <link rel="stylesheet" th:href="@{/css/Draft.css}">
 </head>
@@ -65,11 +66,6 @@
                                 <span>Home</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" id="link-download">
-                                <i class="fa fa-download"></i>
-                                <span>Download Claims</span>
-                            </a>
                     </ul>
                 </div>
                 <!-- sidebar-menu  -->
@@ -80,29 +76,26 @@
 
     <div class="main">
         <div class="main-content">
-            <table class="table">
+            <table class="table" id="table">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" id="checkboxAll"></th>
                     <th>Email</th>
                     <th>Project Name</th>
                     <th>Total working Hour</th>
                     <th>Remark</th>
                     <th>Status</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody id="claimTable">
 
                 </tbody>
             </table>
-            <button class="btn btn-primary" id="paid-btn">Paid</button>
-
-
+            <button class="btn btn-primary" id="btn-download">Download Claims</button>
         </div>
+
     </div>
 </div>
-<script th:src="@{/js/Finance.js}"></script>
+<script th:src="@{/js/FinancePaid.js}"></script>
 
 </body>
 </html>

@@ -27,8 +27,10 @@ public class Staff {
     private String department;
     private String password;
     private String rePassword;
-    @OneToMany(mappedBy = "staff")
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
 
+    @OneToMany(mappedBy = "staff")
     @JsonIgnore
     private List<Claim> claims = new ArrayList<>();
     @JsonIgnore
