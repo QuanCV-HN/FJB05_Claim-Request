@@ -33,6 +33,10 @@ let roleList = [
     {
         value: "TECH_CONSULTANT",
         text: "TECH CONSULTANT"
+    },
+    {
+        value: "FINANCE",
+        text: "FINANCE"
     }
 ];
 function getRoleSelectInput() {
