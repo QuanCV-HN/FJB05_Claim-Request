@@ -103,14 +103,14 @@ function getAllInfoStaff(e) {
 
                     let formattedDate = `${year}-${month}-${day}`;
                     startDate.textContent = formattedDate;
-                    var sqlEndDate = selectedWorkingDTO.endDate;
-                    var jsEndDate = new Date(sqlEndDate);
+                    let sqlEndDate = selectedWorkingDTO.endDate;
+                    let jsEndDate = new Date(sqlEndDate);
 
                      year = jsEndDate.getFullYear();
                      month = String(jsEndDate.getMonth() + 1).padStart(2, '0');
                      day = String(jsEndDate.getDate()).padStart(2, '0');
 
-                    var formattedEndDate = `${year}-${month}-${day}`;
+                    let formattedEndDate = `${year}-${month}-${day}`;
                     endDate.textContent = formattedEndDate;
                 } else {
                     roleInproject.innerText = "";
@@ -138,31 +138,32 @@ document.getElementById("submitDraft").addEventListener("click", function() {
             { id: parseInt(document.getElementById("projectId").innerText) } :
             null
     };
+    let formattedStartDate = startDate.textContent;
+    let formattedEndDate = endDate.textContent;
 
-    $.ajax({
-        url: "http://localhost:8080/api/createClaim",
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(claimData),
-        success: function(response) {
-            let formattedStartDate = startDate.textContent;
-            let formattedEndDate = endDate.textContent;
+    let claimDate = dateOutput.innerText;
+    let claimDateFormatted = claimDate.split("/").reverse().join("-");
 
-            let claimDate = dateOutput.innerText;
-            let claimDateFormatted = claimDate.split("/").reverse().join("-");
-
-            if (claimDateFormatted < formattedStartDate || claimDateFormatted > formattedEndDate) {
-                alert("Ngày yêu cầu không hợp lệ!");
-                return;
+    if (claimDateFormatted < formattedStartDate || claimDateFormatted > formattedEndDate) {
+        alert("Ngày yêu cầu không hợp lệ!");
+        return;
+    }else {
+        $.ajax({
+            url: "http://localhost:8080/api/createClaim",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(claimData),
+            success: function(response) {
+                alert("Save thành công!");
+                window.location.href = "/claim/draft";
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi từ server
             }
+        });
+    }
 
-            alert("Save thành công!");
-            window.location.href = "/claim/draft";
-        },
-        error: function(xhr, status, error) {
-            // Xử lý lỗi từ server
-        }
-    });
+
 });
 
 document.getElementById("submitPending").addEventListener("click", function() {
@@ -181,30 +182,31 @@ document.getElementById("submitPending").addEventListener("click", function() {
             { id: parseInt(document.getElementById("projectId").innerText) } :
             null
     };
+    let formattedStartDate = startDate.textContent;
+    let formattedEndDate = endDate.textContent;
 
-    $.ajax({
-        url: "http://localhost:8080/api/createClaim",
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(claimData),
-        success: function(response) {
-            let formattedStartDate = startDate.textContent;
-            let formattedEndDate = endDate.textContent;
+    let claimDate = dateOutput.innerText;
+    let claimDateFormatted = claimDate.split("/").reverse().join("-");
 
-            let claimDate = dateOutput.innerText;
-            let claimDateFormatted = claimDate.split("/").reverse().join("-");
-
-            if (claimDateFormatted < formattedStartDate || claimDateFormatted > formattedEndDate) {
-                alert("Ngày yêu cầu không hợp lệ!");
-                return;
+    if (claimDateFormatted < formattedStartDate || claimDateFormatted > formattedEndDate) {
+        alert("Ngày yêu cầu không hợp lệ!");
+        return;
+    }else {
+        $.ajax({
+            url: "http://localhost:8080/api/createClaim",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(claimData),
+            success: function(response) {
+                alert("Submit thành công!");
+                window.location.href = "/claim/draft";
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi từ server
             }
-            alert("Submit thành công!");
-            window.location.href = "/claim/draft";
-        },
-        error: function(xhr, status, error) {
-            // Xử lý lỗi từ server
-        }
-    });
+        });
+
+    }
 });
 
 let linkBack = document.getElementById("link-back");

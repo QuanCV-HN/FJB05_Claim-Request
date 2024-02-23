@@ -25,6 +25,7 @@ body {
     width: 18rem;
     height: 18rem;
     z-index: 1000;
+    filter: drop-shadow(0.60em 0.60em 0.60em yellow);
 }
 .LogIn {
     width: 20em;
