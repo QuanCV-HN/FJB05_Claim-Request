@@ -10,4 +10,9 @@ public class StaffController {
     public String getStaffPage() {
         return "staff/list";
     }
+
+    @GetMapping("admin/staff/create")
+    public String createStaffPage() {
+        return "staff/create";
+    }
 }

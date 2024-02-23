@@ -26,7 +26,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .collect(Collectors.toList());
 
         if (roles.contains("ROLE_ADMIN")) {
-            return "/admin";
+            return "/admin/projects/list";
         } else {
             return "/claim/draft";
         }
