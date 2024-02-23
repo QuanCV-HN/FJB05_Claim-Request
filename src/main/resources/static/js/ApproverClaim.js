@@ -63,7 +63,15 @@ function ApproveStaffPending() {
             staffId.textContent = response.staffId;
             projectId.textContent =response.projectId;
             remark.textContent = response.remarks;
-            dateOutput.textContent = response.claimDate;
+            let sqlDate = response.claimDate;
+            let jsDate = new Date(sqlDate);
+
+            let year = jsDate.getFullYear();
+            let month = String(jsDate.getMonth() + 1).padStart(2, '0');
+            let day = String(jsDate.getDate()).padStart(2, '0');
+
+            let formattedDate = `${year}-${month}-${day}`;
+            dateOutput.textContent = formattedDate;
             dayOutput.textContent = response.day;
             fromOutput.textContent = response.fromDate;
             toOutput.textContent = response.toDate;
@@ -74,6 +82,24 @@ function ApproveStaffPending() {
                     if (infoResponse.workingDTOS[i].project.id === response.projectId) {
                         nameProject.textContent = infoResponse.workingDTOS[i].project.nameProject;
                         roleInProject.textContent =infoResponse.workingDTOS[i].roleStaff;
+                        let sqlDate = infoResponse.workingDTOS[i].startDate;
+                        let jsDate = new Date(sqlDate);
+
+                        let year = jsDate.getFullYear();
+                        let month = String(jsDate.getMonth() + 1).padStart(2, '0');
+                        let day = String(jsDate.getDate()).padStart(2, '0');
+
+                        let formattedDate = `${year}-${month}-${day}`;
+                        startDate.textContent = formattedDate;
+                        let sqlEndDate = infoResponse.workingDTOS[i].endDate;
+                        let jsEndDate = new Date(sqlEndDate);
+
+                        year = jsEndDate.getFullYear();
+                        month = String(jsEndDate.getMonth() + 1).padStart(2, '0');
+                        day = String(jsEndDate.getDate()).padStart(2, '0');
+
+                        let formattedEndDate = `${year}-${month}-${day}`;
+                        endDate.textContent = formattedEndDate;
                         break;
                     }
                 }

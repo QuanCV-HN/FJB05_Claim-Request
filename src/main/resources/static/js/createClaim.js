@@ -103,14 +103,14 @@ function getAllInfoStaff(e) {
 
                     let formattedDate = `${year}-${month}-${day}`;
                     startDate.textContent = formattedDate;
-                    var sqlEndDate = selectedWorkingDTO.endDate;
-                    var jsEndDate = new Date(sqlEndDate);
+                    let sqlEndDate = selectedWorkingDTO.endDate;
+                    let jsEndDate = new Date(sqlEndDate);
 
                      year = jsEndDate.getFullYear();
                      month = String(jsEndDate.getMonth() + 1).padStart(2, '0');
                      day = String(jsEndDate.getDate()).padStart(2, '0');
 
-                    var formattedEndDate = `${year}-${month}-${day}`;
+                    let formattedEndDate = `${year}-${month}-${day}`;
                     endDate.textContent = formattedEndDate;
                 } else {
                     roleInproject.innerText = "";
