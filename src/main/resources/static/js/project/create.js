@@ -1,4 +1,40 @@
+let hasPM = false;
+let hasQA = false;
+
+let roleList = [
+    {
+        value: "PM",
+        text: "PM"
+    },
+    {
+        value: "QA",
+        text: "QA"
+    },
+    {
+        value: "BA",
+        text: "BA"
+    },
+    {
+        value: "DEV",
+        text: "DEV"
+    },
+    {
+        value: "TESTER",
+        text: "TESTER"
+    },
+    {
+        value: "TECH_LEAD",
+        text: "TECH LEAD"
+    },
+    {
+        value: "TECH_CONSULTANT",
+        text: "TECH CONSULTANT"
+    }
+];
+
 function getStaffSelectInput(staffList) {
+    staffList = staffList.filter(staff => staff.role !== "ROLE_ADMIN");
+
     let selectElement = "<select class='form-control'>"
     staffList.forEach(staff => {
         let option = `
@@ -9,16 +45,29 @@ function getStaffSelectInput(staffList) {
     return selectElement + "</select>";
 }
 
-function staffTable(staffList) {
-    let roleSelect = `
-        <select class="form-control select-role">
-            <option value="PM">PM</option>
-            <option value="QA">QA</option>
-            <option value="Dev">Dev</option>
-            <option value="Test">Test</option>
-            <option value="BA">BA</option>
-        </select>`
+function getRoleSelectInput() {
+    let roleSelect = roleList;
+    //Check if already have pm or qa selected
+    hasPM = $('tbody tr:has(.select-role[value="PM"])').length;
+    hasQA = $('tbody tr:has(.select-role[value="QA"])').length;
 
+    if (hasPM) {
+        roleSelect = roleSelect.filter(role => role.value !== "PM");
+    }
+    if (hasQA) {
+        roleSelect = roleSelect.filter(role => role.value !== "QA");
+    }
+
+    let roleSelectHTML = '<select class="form-control select-role">';
+    roleSelect.forEach(role => {
+        roleSelectHTML += `<option value="${role.value}">${role.text}</option>`
+    })
+    roleSelectHTML += '</select>';
+
+    return roleSelectHTML;
+}
+
+function staffTable(staffList) {
     $('[data-toggle="tooltip"]').tooltip();
     // Append table with add row form on add new button click
     $(".add-new").click(function () {
@@ -30,7 +79,7 @@ function staffTable(staffList) {
                 </td>
         
                 <td class="select-role">
-                    ${roleSelect}
+                    ${getRoleSelectInput()}
                 </td>
         
                 <td class="work-start">
@@ -75,12 +124,15 @@ function staffTable(staffList) {
         if (!empty) {
             input.each(function () {
                 let tdElement = $(this).parent("td");
-                if (tdElement.attr('class') === 'select-staff' | tdElement.attr('class') === 'select-role') {
+                if (tdElement.attr('class') === 'select-staff') {
                     let selectedOption = $(this).find(':selected').text();
                     tdElement.html(selectedOption);
                     tdElement.attr('id', $(this).val());
-                }
-                else {
+                } else if (tdElement.attr('class') === 'select-role') {
+                    let selectedOption = $(this).find(':selected').text();
+                    tdElement.html(selectedOption);
+                    tdElement.attr("value", $(this).val());
+                } else {
                     tdElement.html($(this).val());
                 }
             });
@@ -100,8 +152,8 @@ function staffTable(staffList) {
                 $(this).html(getStaffSelectInput(staffList));
                 $(this).find('select').val(tdId);
             } else if (tdClass === "select-role") {
-                $(this).html(roleSelect);
-                $(this).find('select').val(tdId);
+                $(this).html(getRoleSelectInput());
+                $(this).find('select').val($(this).attr('value'));
             } else {
                 $(this).html('<input type="date" class="form-control" value="' + $(this).text() + '">');
             }
@@ -142,7 +194,7 @@ $(".save-project button").click(function () {
     let staffRows = $("tbody tr");
     staffRows.each(function () {
         let id = $(this).find(".select-staff").attr('id');
-        let role = $(this).find(".select-role").attr('id');
+        let role = $(this).find(".select-role").attr('value');
         let start = $(this).find(".work-start").text();
         let end = $(this).find(".work-end").text();
 
@@ -167,19 +219,29 @@ $(".save-project button").click(function () {
         staffs: staffsData
     }
 
-    $.ajax({
-        url: "http://localhost:8080/api/projects/create",
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(projectData),
-        success: function (response) {
-            alert("Save thành công!");
-            window.location.href = "/projects/list";
-        },
-        error: function (xhr, status, error) {
-            // Xử lý lỗi từ server
-        }
-    });
+    hasPM = $('tbody tr:has(.select-role[value="PM"])').length;
+    hasQA = $('tbody tr:has(.select-role[value="QA"])').length;
+
+    if (hasPM & hasQA) {
+        $.ajax({
+            url: "http://localhost:8080/api/projects/create",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(projectData),
+            success: function (response) {
+                alert("Save thành công!");
+                window.location.href = "/admin/projects/list";
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi từ server
+            }
+        });
+    }
+
+    else {
+        alert("Project doesnt have PM or QA!!!");
+    }
+
 });
 
 
