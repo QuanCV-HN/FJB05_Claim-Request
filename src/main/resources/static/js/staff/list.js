@@ -4,6 +4,8 @@ function getAllStaff() {
         type: "GET",
         dataType: "json",
         success: function (staffList) {
+            staffList = staffList.filter(staff => staff.role !== "ROLE_ADMIN");
+
             let staffTable = $("#staff-table");
             staffTable.empty();
             staffList.forEach(staff => {
@@ -15,8 +17,8 @@ function getAllStaff() {
                             <td>${staff.rank}</td>
                             <td>${staff.salary}</td>
                             <td>
-                                <a class="edit"  data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                <a class="delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                <a class="edit" href="/admin/staff/edit/${staff.id}" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                <a class="delete" onclick="deleteStaffById(${staff.id})" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                             </td>
                         </tr>
                     `
@@ -31,3 +33,10 @@ function getAllStaff() {
 
 
 getAllStaff();
+
+function deleteStaffById(staffId) {
+    if (confirm("You are sure?")===true) {
+        window.location.href = "/admin/staff/delete/" + staffId;
+    }
+
+}

@@ -27,14 +27,15 @@ public class Staff {
     private String department;
     private String password;
     private String rePassword;
+
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-    @OneToMany(mappedBy = "staff")
+    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Claim> claims = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "staff")
+    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
     private List<Working> workings = new ArrayList<>();
 }

@@ -27,6 +27,31 @@ public class StaffService {
     public Staff getStaffById(Integer staffId) throws ChangeSetPersister.NotFoundException {
         return staffRepository.findById(staffId).orElseThrow(() -> new ChangeSetPersister.NotFoundException());
     }
+
+    public Staff createStaff(StaffDTO staffDTO) {
+        Staff staff = new Staff();
+
+        staff.setName(staffDTO.getName());
+        staff.setEmail(staffDTO.getEmail());
+        staff.setPassword(staffDTO.getPassword());
+        staff.setRePassword(staffDTO.getRePassword());
+
+        staff.setDepartment(staffDTO.getDepartment());
+        staff.setRank(staffDTO.getRank());
+        staff.setSalary(staffDTO.getSalary());
+        staff.setRole(RoleEnum.ROLE_STAFF);
+
+        return saveStaff(staff);
+    }
+
+    public Staff saveStaff(Staff staff) {
+        return staffRepository.save(staff);
+    }
+
+    public void deleteStaffById(Integer staffId) {
+        staffRepository.deleteById(staffId);
+    }
+
     public StaffDTO getStaff(Integer id) throws ChangeSetPersister.NotFoundException {
         Optional<Staff> staffOptional = staffRepository.findById(id);
         if (staffOptional.isPresent()) {

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create New Project</title>
+    <title>Edit Staff</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -19,40 +19,40 @@
     <link rel="stylesheet" th:href="@{/css/staff/create.css}">
 
     <div class="container">
-        <h1>Create New Staff</h1>
-        <form th:action="@{/admin/staff/create}" th:method="POST" class="table-wrapper" th:object="${staffDTO}">
+        <h1>Editing Staff</h1>
+        <form th:action="@{/admin/staff/edit/{id}(id = *{id})}" th:method="POST" class="table-wrapper" th:object="${updatingStaff}">
             <div class="staff-account">
                 <div>
-                    <input class="form-control" type="text" placeholder="Staff Name" name="name">
+                    <input class="form-control" type="text" placeholder="Staff Name" th:field="*{name}">
                 </div>
 
                 <div>
-                    <input class="form-control" type="email" placeholder="Email" name="email">
+                    <input class="form-control" type="email" placeholder="Email" th:field="*{email}">
                 </div>
 
                 <div>
-                    <input class="form-control" type="password" placeholder="Password" name="password">
+                    <input class="form-control" type="password" placeholder="Password" th:field="*{password}">
                 </div>
 
                 <div>
-                    <input class="form-control" type="password" placeholder="Confirm Password" name="rePassword">
+                    <input class="form-control" type="password" placeholder="Confirm Password" th:field="*{rePassword}">
                 </div>
             </div>
 
             <div class="row">
                 <div>
                     <label>Department</label>
-                    <input class="form-control" type="text" name="department">
+                    <input class="form-control" type="text" th:field="*{department}">
                 </div>
 
                 <div>
                     <label>Job Rank</label>
-                    <input class="form-control" type="text" name="rank">
+                    <input class="form-control" type="text" th:field="*{rank}">
                 </div>
 
                 <div>
                     <label>Salary</label>
-                    <input class="form-control" type="text" name="salary">
+                    <input class="form-control" type="text" th:field="*{salary}">
                 </div>
             </div>
 

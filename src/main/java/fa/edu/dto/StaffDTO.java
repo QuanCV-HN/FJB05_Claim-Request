@@ -1,5 +1,6 @@
 package fa.edu.dto;
 
+import fa.edu.entities.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
